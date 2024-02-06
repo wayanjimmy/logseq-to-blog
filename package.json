@@ -14,7 +14,8 @@
   "author": "Aryan Sawhney",
   "license": "MIT",
   "dependencies": {
-    "@logseq/libs": "0.0.1-alpha.34"
+    "@logseq/libs": "0.0.1-alpha.34",
+    "axios": "^1.6.7"
   },
   "logseq": {
     "id": "wayanjimmy-logseq-to-blog-exporter",
@@ -22,6 +23,7 @@
     "icon": "./icon.png"
   },
   "devDependencies": {
+    "buffer": "^6.0.3",
     "parcel": "^2.0.0"
   }
 }

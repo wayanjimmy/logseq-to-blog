@@ -1,4 +1,8 @@
 import '@logseq/libs';
+import axios from 'axios';
+
+const API_URL = process.env.BLOG_API_BASE_URL;
+const API_TOKEN = 'qwe123';
 
 const main = async () => {
   logseq.App.registerPageMenuItem("(Blog) Publish Fragment", async () => {
@@ -20,11 +24,11 @@ const main = async () => {
         .map(b => b.content).join("\n");
 
       return {
-        uuid: page.uuid,
-        name: page.name,
-        content: content,
+        ref_id: page.uuid,
+        title: page.originalName,
+        body: content,
       };
-    })
+    });
 
     // NOTES: I need to map all fragments into a format which help me to send request to the API later
     // thinking of something like this
@@ -39,7 +43,17 @@ const main = async () => {
 
      */
 
-    const fragments = await Promise.all(result)
+    const fragments = await Promise.all(result);
+
+    for (const fragment of fragments) {
+      axios.post(`${API_URL}/fragments?token=${API_TOKEN}`, fragment)
+        .then(response => {
+          console.log({ response });
+        })
+        .catch(error => {
+          console.log({ error });
+        });
+    }
 
     console.log({ fragments });
   });
