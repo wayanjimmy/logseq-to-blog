@@ -2,7 +2,7 @@ import '@logseq/libs';
 import axios from 'axios';
 
 const API_URL = process.env.BLOG_API_BASE_URL;
-const API_TOKEN = 'qwe123';
+const API_TOKEN = process.env.BLOG_API_TOKEN;
 
 const main = async () => {
   logseq.App.registerPageMenuItem("(Blog) Publish Fragment", async () => {
@@ -19,9 +19,10 @@ const main = async () => {
       // get all blocks tree to build the page content
       const tree = await logseq.Editor.getPageBlocksTree(page.uuid);
 
+      //TODO: add new line on between block
       const content = tree
         .filter((_b, i) => i > 0)
-        .map(b => b.content).join("\n");
+        .map(b => b.content + "\n").join("\n");
 
       return {
         ref_id: page.uuid,
@@ -46,7 +47,7 @@ const main = async () => {
     const fragments = await Promise.all(result);
 
     for (const fragment of fragments) {
-      axios.post(`${API_URL}/fragments?token=${API_TOKEN}`, fragment)
+      axios.post(`${API_URL}/api/fragments?token=${API_TOKEN}`, fragment)
         .then(response => {
           console.log({ response });
         })
